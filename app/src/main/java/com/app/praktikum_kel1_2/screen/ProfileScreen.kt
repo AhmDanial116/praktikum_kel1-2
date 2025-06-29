@@ -15,10 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.app.praktikum_kel1_2.navigation.Screen
 
 @Composable
-fun ResultScreen(name: String, navController: NavController) {
+fun ProfileScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,10 +34,10 @@ fun ResultScreen(name: String, navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Halo, $name!",
+                text = "Profil Pengguna",
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
@@ -47,37 +46,20 @@ fun ResultScreen(name: String, navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Selamat datang di halaman hasil.",
+                text = "Ini adalah halaman profil.",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center
                 )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    navController.navigate(route = Screen.Home.route) {
-                        popUpTo(Screen.Result.route) { inclusive = true }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text("Kembali", fontSize = 16.sp)
-            }
+            // Spacer dan konten tambahan dapat ditambahkan di sini, misalnya: data user, tombol logout, dll.
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ResultPreview() {
-    ResultScreen(
-        name = "",
-        navController = rememberNavController()
-    )
+fun ProfileScreenPreview() {
+    ProfileScreen(navController = rememberNavController())
 }

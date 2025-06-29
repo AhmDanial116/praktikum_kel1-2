@@ -7,30 +7,50 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.app.praktikum_kel1_2.navigation.SetupNavGraph
 import com.app.praktikum_kel1_2.ui.theme.Praktikum_kel12Theme
 
-
+/**
+ * MainActivity adalah titik masuk utama aplikasi Android ini.
+ * Menggunakan Jetpack Compose untuk mendefinisikan UI aplikasi.
+ */
 class MainActivity : ComponentActivity() {
 
+    /**
+     * Fungsi onCreate dijalankan saat activity pertama kali dibuat.
+     * Di sini kita mengaktifkan edge-to-edge layout dan menampilkan UI dengan tema Compose.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Mengaktifkan tampilan penuh sampai ke edge (tanpa padding sistem)
         enableEdgeToEdge()
+
+        // Menentukan konten UI menggunakan Compose
         setContent {
+            // Menerapkan tema aplikasi
             Praktikum_kel12Theme {
+                // Membuat controller navigasi untuk mengatur halaman
                 val navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+
+                // Menampilkan UI utama aplikasi
+                MyApp(navController)
             }
         }
     }
 }
 
-
+/**
+ * Fungsi ini digunakan untuk menampilkan preview dari UI utama (MyApp) di Android Studio.
+ * Preview ini membantu saat desain UI menggunakan Compose.
+ */
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Praktikum_kel12Theme {
+        // Membuat navController sementara untuk preview
         val navController = rememberNavController()
-        SetupNavGraph(navController = navController)
+
+        // Menampilkan UI utama di preview
+        MyApp(navController)
     }
 }
