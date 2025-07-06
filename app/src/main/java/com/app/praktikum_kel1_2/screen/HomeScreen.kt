@@ -2,6 +2,8 @@ package com.app.praktikum_kel1_2.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,70 +18,27 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.app.praktikum_kel1_2.navigation.Screen
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.praktikum_kel1_2.components.NoteCard
+import com.app.praktikum_kel1_2.model.viewModel.NotesViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    var text by remember { mutableStateOf("") }
-    val focusManager = LocalFocusManager.current
-
+fun HomeScreen(navController: NavController, viewModel : NotesViewModel = viewModel()) {
+    val notesState by viewModel.notes.collectAsState()
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(2.dp, RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.background, RoundedCornerShape(16.dp))
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Halo!",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontSize = 26.sp,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "Masukkan nama Anda",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
-                )
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("Nama") },
-                singleLine = true,
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors()
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    focusManager.clearFocus()
-                    navController.navigate(route = Screen.Result.passText(text))
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(10.dp)
+        if (notesState.isEmpty()){
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text("Submit", fontSize = 16.sp)
+                items(notesState) {
+                    note ->
+                    NoteCard(note)
+                }
             }
         }
     }
